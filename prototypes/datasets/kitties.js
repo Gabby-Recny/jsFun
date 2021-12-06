@@ -20,7 +20,3 @@ const kitties = [
     color: 'tuxedo'
   }
 ];
-
-module.exports = {
-  kitties
-}
