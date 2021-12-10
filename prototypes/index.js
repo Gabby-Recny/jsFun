@@ -26,7 +26,7 @@ const kittyPrompts = {
   orangeKittyNames() {
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    let orangeKitties = kitties.filter(kitty => kitty.color === 'orange';
+    let orangeKitties = kitties.filter(kitty => kitty.color === 'orange');
     let orangeName = orangeKitties.map(kitty => kitty.name);
     return orangeName;
 
@@ -124,12 +124,12 @@ const modPrompts = {
     //   { mod: 3, studentsPerInstructor: 10 },
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods.map(index => {
+      let stuPerInst = index.students/          index.instructors;
+      return {mod: index.mod, studentsPerInstructor:  stuPerInst};
+        });
     return result;
 
-    // Annotation:
-    // Write your annotation here as a comment
   }
 };
 
@@ -264,7 +264,10 @@ const classPrompts = {
     //   { roomLetter: 'G', program: 'FE', capacity: 29 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result =
+    classrooms.filter(classroom =>
+      classroom.program === 'FE'
+    )
     return result;
 
     // Annotation:
@@ -279,9 +282,19 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    let beClassrooms = classrooms.filter(classroom => classroom.program ==='BE' )
+    let feClassrooms = classrooms.filter(classroom =>
+      classroom.program === 'FE')
+    let reduceMe = feClassrooms.reduce((acc,classroom) => {
+      acc += classroom.capacity
+      return acc
+    }, 0)
+    let reduceYou = beClassrooms.reduce((acc,classroom) => {
+      acc += classroom.capacity
+      return acc
+    }, 0)
+    const result = {feCapacity: reduceMe, beCapacity: reduceYou}
     return result;
-
     // Annotation:
     // Write your annotation here as a comment
   },
