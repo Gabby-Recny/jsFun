@@ -159,8 +159,10 @@ const cakePrompts = {
     //    { flavor: 'yellow', inStock: 14 },
     //    ..etc
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    //
+    const result = cakes.map(cake => {
+      return {flavor: cake.cakeFlavor, inStock: cake.inStock}
+    })
     return result;
 
     // Annotation:
@@ -168,6 +170,7 @@ const cakePrompts = {
   },
 
   onlyInStock() {
+
     // Return an array of only the cakes that are in stock
     // e.g.
     // [
@@ -188,7 +191,9 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => {
+      return cake.inStock > 0
+    })
     return result;
 
     // Annotation:
@@ -199,7 +204,11 @@ const cakePrompts = {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.reduce((acc, cake) => {
+
+      acc += cake.inStock
+      return acc
+    }, 0)
     return result;
 
     // Annotation:
@@ -210,17 +219,25 @@ const cakePrompts = {
     // Return an array of all unique toppings (no duplicates) needed to bake
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
+    const result = cakes.reduce((acc, cake) => {
+      cake.toppings.forEach(topping => {
+        if (!acc.includes(topping)) {
+          acc.push(topping)
+        }
+      })
+      return acc
+    }, [])
+    return result
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //Access each cake's toppings array
+    //Remove toppings from individual array
+    //Place in new array if the topping is not already in there.
   },
 
   groceryList() {
-    // I need to make a grocery list. Please give me an object where the keys are
-    // each topping, and the values are the amount of that topping I need to buy e.g.
+    // I need to make a grocery list. Please give me an object where the keys are each topping, and the values are the amount of that topping I need to buy e.g.
     // {
     //    'dutch process cocoa': 1,
     //    'toasted sugar': 3,
@@ -228,12 +245,25 @@ const cakePrompts = {
     //    'berries': 2,
     //    ...etc
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = cakes.reduce((acc, cake) => {
+      const getToppings = cake.toppings.filter(topping => {
+        if(!acc[topping]) {
+          acc[topping] = 1;
+          return acc;
+          console.log("ACC", acc)
+        } else {
+          acc[topping] += 1;
+          return acc;
+        }
+      })
+      return acc
+    }, {})
+    return result
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Input: Array of objects.
+    // Output: Object is keys of ingredient names and values of how many times
+    // the ingredient shows up in the array.
   }
 };
 
@@ -302,8 +332,10 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = () => {
+      return classrooms.sort((a,b) => a.capacity - b.capacity)
+  }
+    result()
 
     // Annotation:
     // Write your annotation here as a comment
@@ -329,11 +361,16 @@ const bookPrompts = {
     //   'Catch-22', 'Treasure Island']
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+
+      const result = books.filter(book => book.genre !== "Horror")
+      const newResult = result.filter(book => book.genre !== "True Crime")
+      const filteredBooks = newResult.map(book => book.title)
+      return filteredBooks;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Returning all books that are NOT horror/true crime
+    //Access genre of books
+    //If genre !=== "Horror" && "True Crime"
 
   },
   getNewBooks() {
@@ -344,11 +381,16 @@ const bookPrompts = {
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const newBooks = books.filter(book => book.published > 1989);
+    const result = newBooks.map(newBook => {
+      return {title: newBook.title, year: newBook.published}
+    })
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //Create array of books published in 1990s
+    //Creative array of books published in 2000s
+    //Does publishing include 199? What about 20?
   }
 
 };
