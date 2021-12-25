@@ -1,10 +1,15 @@
+//Done
 const { kitties } = require('./datasets/kitties');
 const { clubs } = require('./datasets/clubs');
+//Done
 const { mods } = require('./datasets/mods');
+//Done
 const { cakes } = require('./datasets/cakes');
+//Done
 const { classrooms } = require('./datasets/classrooms');
 const { breweries } = require('./datasets/breweries');
 const { nationalParks } = require('./datasets/nationalParks');
+//Done
 const { books } = require('./datasets/books');
 const { weather } = require('./datasets/weather');
 const { instructors, cohorts } = require('./datasets/turing');
@@ -532,15 +537,20 @@ const breweryPrompts = {
   getBeerCount() {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const totalBeers = breweries.reduce((acc, brewery) => {
+      acc += brewery.beers.length
+      return acc
+    }, 0)
+    return totalBeers
 
     // Annotation:
     // Write your annotation here as a comment
   },
 
   getBreweryBeerCount() {
+    const breweryInfo = breweries.map(brewery => {
+      return {name: brewery.name, beerCount: brewery.beers.length}
+    })
     // Return an array of objects where each object has the name of a brewery
     // and the count of the beers that brewery has e.g.
     // [
@@ -549,20 +559,18 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    return breweryInfo
 
     // Annotation:
     // Write your annotation here as a comment
   },
 
   findHighestAbvBeer() {
+    const sortByAbv = breweries.sort((a, b) => b.beers.abv - a.beers.abv);
+    console.log(sortByAbv)
     // Return the beer which has the highest ABV of all beers
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
 
     // Annotation:
     // Write your annotation here as a comment
