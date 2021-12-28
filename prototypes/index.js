@@ -7,7 +7,9 @@ const { mods } = require('./datasets/mods');
 const { cakes } = require('./datasets/cakes');
 //Done
 const { classrooms } = require('./datasets/classrooms');
+//Done
 const { breweries } = require('./datasets/breweries');
+//Done
 const { nationalParks } = require('./datasets/nationalParks');
 //Done
 const { books } = require('./datasets/books');
@@ -62,7 +64,7 @@ const kittyPrompts = {
     // ...etc]
     const result = kitties.map(kitty => {
       return kitty.age + 2;
-    })
+    });
     return result;
   }
 };
@@ -93,12 +95,17 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
+    const clubMembers = clubs.reduce((acc, club) => {
+
+      return acc
+    }, {})
 
     const result = 'REPLACE WITH YOUR RESULT HERE';
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Iterate through club.members to access the names.
+    //Make them into keys using bracket notionation
   }
 };
 
@@ -132,7 +139,7 @@ const modPrompts = {
     const result = mods.map(index => {
       let stuPerInst = index.students/          index.instructors;
       return {mod: index.mod, studentsPerInstructor:  stuPerInst};
-        });
+    });
     return result;
 
   }
@@ -166,8 +173,8 @@ const cakePrompts = {
     // ]
     //
     const result = cakes.map(cake => {
-      return {flavor: cake.cakeFlavor, inStock: cake.inStock}
-    })
+      return {flavor: cake.cakeFlavor, inStock: cake.inStock};
+    });
     return result;
 
     // Annotation:
@@ -197,8 +204,8 @@ const cakePrompts = {
     // ]
 
     const result = cakes.filter(cake => {
-      return cake.inStock > 0
-    })
+      return cake.inStock > 0;
+    });
     return result;
 
     // Annotation:
@@ -211,9 +218,9 @@ const cakePrompts = {
 
     const result = cakes.reduce((acc, cake) => {
 
-      acc += cake.inStock
-      return acc
-    }, 0)
+      acc += cake.inStock;
+      return acc;
+    }, 0);
     return result;
 
     // Annotation:
@@ -227,12 +234,12 @@ const cakePrompts = {
     const result = cakes.reduce((acc, cake) => {
       cake.toppings.forEach(topping => {
         if (!acc.includes(topping)) {
-          acc.push(topping)
+          acc.push(topping);
         }
-      })
-      return acc
-    }, [])
-    return result
+      });
+      return acc;
+    }, []);
+    return result;
 
 
     // Annotation:
@@ -255,15 +262,14 @@ const cakePrompts = {
         if(!acc[topping]) {
           acc[topping] = 1;
           return acc;
-          console.log("ACC", acc)
         } else {
           acc[topping] += 1;
           return acc;
         }
-      })
-      return acc
-    }, {})
-    return result
+      });
+      return acc;
+    }, {});
+    return result;
 
     // Annotation:
     // Input: Array of objects.
@@ -302,7 +308,7 @@ const classPrompts = {
     const result =
     classrooms.filter(classroom =>
       classroom.program === 'FE'
-    )
+    );
     return result;
 
     // Annotation:
@@ -317,18 +323,18 @@ const classPrompts = {
     //   beCapacity: 96
     // }
 
-    let beClassrooms = classrooms.filter(classroom => classroom.program ==='BE' )
+    let beClassrooms = classrooms.filter(classroom => classroom.program ==='BE' );
     let feClassrooms = classrooms.filter(classroom =>
-      classroom.program === 'FE')
+      classroom.program === 'FE');
     let reduceMe = feClassrooms.reduce((acc,classroom) => {
-      acc += classroom.capacity
-      return acc
-    }, 0)
+      acc += classroom.capacity;
+      return acc;
+    }, 0);
     let reduceYou = beClassrooms.reduce((acc,classroom) => {
-      acc += classroom.capacity
-      return acc
-    }, 0)
-    const result = {feCapacity: reduceMe, beCapacity: reduceYou}
+      acc += classroom.capacity;
+      return acc;
+    }, 0);
+    const result = {feCapacity: reduceMe, beCapacity: reduceYou};
     return result;
     // Annotation:
     // Write your annotation here as a comment
@@ -338,9 +344,9 @@ const classPrompts = {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
     const result = () => {
-      return classrooms.sort((a,b) => a.capacity - b.capacity)
-  }
-    result()
+      return classrooms.sort((a,b) => a.capacity - b.capacity);
+    };
+    result();
 
     // Annotation:
     // Write your annotation here as a comment
@@ -367,10 +373,10 @@ const bookPrompts = {
 
 
 
-      const result = books.filter(book => book.genre !== "Horror")
-      const newResult = result.filter(book => book.genre !== "True Crime")
-      const filteredBooks = newResult.map(book => book.title)
-      return filteredBooks;
+    const result = books.filter(book => book.genre !== 'Horror');
+    const newResult = result.filter(book => book.genre !== 'True Crime');
+    const filteredBooks = newResult.map(book => book.title);
+    return filteredBooks;
 
     // Annotation:
     // Returning all books that are NOT horror/true crime
@@ -388,8 +394,8 @@ const bookPrompts = {
 
     const newBooks = books.filter(book => book.published > 1989);
     const result = newBooks.map(newBook => {
-      return {title: newBook.title, year: newBook.published}
-    })
+      return {title: newBook.title, year: newBook.published};
+    });
     return result;
 
     // Annotation:
@@ -414,11 +420,18 @@ const weatherPrompts = {
     // return an array of all the average temperatures. Eg:
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const avgTemps = [];
+    const calculateAvgTemp = weather.forEach(place => {
+      const avg = (place.temperature.high + place.temperature.low) /2;
+      avgTemps.push(avg);
+    });
+    return avgTemps;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Access temperature for each location.
+    //Add and divide the two numbers
+    //Push result into array
+
   },
 
   findSunnySpots() {
@@ -428,11 +441,20 @@ const weatherPrompts = {
     // 'New Orleans, Louisiana is sunny.',
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const sunnyLocations = [];
+    const findSunnyLocations = weather.filter(place => {
+      return place.type.includes('sunny');
+    });
+    const weatherReport = findSunnyLocations.map(place => {
+      return `${place.location} is ${place.type}.`;
+    });
+    return weatherReport;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Create an array for sunny places.
+    //Filter through weather locations for places that include sunny.
+    //Push places into sunny array.
+    //Iterate through the array with map to log them into sentences.
   },
 
   findHighestHumidity() {
@@ -444,11 +466,12 @@ const weatherPrompts = {
     //   temperature: { high: 49, low: 38 }
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const sortByHumidity = weather.sort((a, b) => b.humidity - a.humidity);
+    return weather[0];
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Sort places my humidity from b-a
+    //Return element at index 0.
 
   }
 };
@@ -470,11 +493,21 @@ const nationalParksPrompts = {
     //   parksToVisit: ["Yellowstone", "Glacier", "Everglades"],
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
+    const parks = {
+      parksVisited: nationalParks.filter(park => {
+        return park.visited === true;
+      }).map(park => park.name),
+      parksToVisit: nationalParks.filter(park => {
+        return park.visited === false;
+      }).map(park => park.name),
+    };
+    return parks;
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+
+
 
     // Annotation:
+    //Filter parks visited and to visit
     // Write your annotation here as a comment
   },
 
@@ -488,11 +521,14 @@ const nationalParksPrompts = {
     // { Florida: 'Everglades' } ]
 
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const parkState = nationalParks.map(park => {
+      return {[park.location]: park.name};
+    });
+    return parkState;
 
     // Annotation:
-    // Write your annotation here as a comment
+    //Goal: Output array of same length with key as location and value as park name.
+    //Iterate over each park
   },
 
   getParkActivities() {
@@ -511,11 +547,20 @@ const nationalParksPrompts = {
     //   'backpacking',
     //   'rock climbing' ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = nationalParks.reduce((acc, park) => {
+      park.activities.forEach(activity => {
+        if (!acc.includes(activity)) {
+          acc.push(activity);
+        }
+      });
+      return acc;
+    }, []);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We want a single array with NO duplicates
+    //Access the nationalParks activites,
+    //Check if the array contains the activity elements
   }
 };
 
@@ -538,10 +583,10 @@ const breweryPrompts = {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
     const totalBeers = breweries.reduce((acc, brewery) => {
-      acc += brewery.beers.length
-      return acc
-    }, 0)
-    return totalBeers
+      acc += brewery.beers.length;
+      return acc;
+    }, 0);
+    return totalBeers;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -549,8 +594,8 @@ const breweryPrompts = {
 
   getBreweryBeerCount() {
     const breweryInfo = breweries.map(brewery => {
-      return {name: brewery.name, beerCount: brewery.beers.length}
-    })
+      return {name: brewery.name, beerCount: brewery.beers.length};
+    });
     // Return an array of objects where each object has the name of a brewery
     // and the count of the beers that brewery has e.g.
     // [
@@ -559,20 +604,33 @@ const breweryPrompts = {
     // ...etc.
     // ]
 
-    return breweryInfo
+    return breweryInfo;
 
     // Annotation:
     // Write your annotation here as a comment
   },
 
   findHighestAbvBeer() {
-    const sortByAbv = breweries.sort((a, b) => b.beers.abv - a.beers.abv);
-    console.log(sortByAbv)
+    const highestABV = [];
+    const sortBeers = breweries.forEach(brewery => {
+      brewery.beers.sort((a, b) => {
+        return b.abv - a.abv;
+      });
+      highestABV.push(brewery.beers[0]);
+    });
+    const sortedHighest = highestABV.sort((a, b) => {
+      return b.abv - a.abv;
+    });
+    return highestABV[0];
     // Return the beer which has the highest ABV of all beers
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
     // Annotation:
+    //Goal: output the beers with the highest ABV.
+    //Beers is a key on the in the brewery.
+    //Sort all the beers, push the highest ABV beers into an array
+    //Sort that array and return the result.
     // Write your annotation here as a comment
   }
 };

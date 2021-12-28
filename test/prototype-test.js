@@ -306,7 +306,7 @@ describe("PROTOTYPES", () => {
     })
   });
 
-  describe("Weather prompts", () => {
+  describe.only("Weather prompts", () => {
     it("getAverageTemps", () => {
       const e = weatherPrompts.getAverageTemps();
 
@@ -374,7 +374,7 @@ describe("PROTOTYPES", () => {
     })
   });
 
-  describe.only("Brewery Prompts", () => {
+  describe("Brewery Prompts", () => {
     it("getBeerCount", () => {
       const e = breweryPrompts.getBeerCount();
 
