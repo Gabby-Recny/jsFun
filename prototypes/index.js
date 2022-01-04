@@ -13,8 +13,10 @@ const { breweries } = require('./datasets/breweries');
 const { nationalParks } = require('./datasets/nationalParks');
 //Done
 const { books } = require('./datasets/books');
+//Done
 const { weather } = require('./datasets/weather');
 const { instructors, cohorts } = require('./datasets/turing');
+//Done
 const { bosses, sidekicks } = require('./datasets/bosses');
 const { constellations, stars } = require('./datasets/astronomy');
 const { weapons, characters } = require('./datasets/ultima');
@@ -95,17 +97,17 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
-    const clubMembers = clubs.reduce((acc, club) => {
-
-      return acc
-    }, {})
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    // const clubMembers = clubs.reduce((acc, club) => {
+    //   console.log(Object.keys("CLUB:", clubs))
+    //   club.members.forEach(member => {
+    //     console.log(member)
+    //   });
+    //   return acc;
+    // }, {});
 
     // Annotation:
-    // Iterate through club.members to access the names.
-    //Make them into keys using bracket notionation
+    //Iterate over club.members and set as keys using bracket notation.
+    //if [club] contains member, push into [member] array
   }
 };
 
@@ -674,12 +676,23 @@ const turingPrompts = {
     //  { name: 'Pam', studentCount: 21 },
     //  { name: 'Robbie', studentCount: 18 }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const checkCohort = instructors.map(instructor => {
+      cohorts.forEach(cohort => {
+        if (cohort.module === instructor.module && !instructor.studentCount) {
+          instructor.studentCount = cohort.studentCount
+        }
+      })
+    })
+    const instructorCohort = instructors.map(instructor => {
+      return {name: instructor.name, studentCount: instructor.studentCount};
+    });
+    return instructorCohort
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Create an array of objects with the instructor name.
+    // Add key of studentCount and set it to 0.
+    //Iterate over cohorts and check if the cohort.module matches instructor.module.
+    // If yes, add studentCount to instructor object.
   },
 
   studentsPerInstructor() {
@@ -688,12 +701,31 @@ const turingPrompts = {
     // cohort1806: 9,
     // cohort1804: 10.5
     // }
+    const totalInstructors = instructors.reduce((acc, instructor) => {
+      if(!acc[instructor.module]) {
+        acc[instructor.module] = 0;
+        acc[instructor.module]++;
+      } else {
+        acc[instructor.module]++;
+      };
+      return acc;
+    }, {});
+    const displayStudentRatio = cohorts.reduce((acc, cohort) => {
+      const modules = Object.keys(totalInstructors);
+      const matchModules = modules.find(module => {
+        return module === cohort.module.toString();
+      })
+        acc[`cohort${cohort.cohort}`] = cohort.studentCount/ totalInstructors[matchModules];
+      return acc;
+    }, {})
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
+      // return {[cohort]`${cohort.cohort}` = null};
+    return displayStudentRatio;
     // Annotation:
-    // Write your annotation here as a comment
+    // Get a count on how many instructors are in each cohort.
+    // Once you have that number, divide cohort.studentCount by it.
+    //Create key of each cohort ex= cohort1801;
+    //Assign the appropriate value to that key.
   },
 
   modulesPerTeacher() {
@@ -727,9 +759,15 @@ const turingPrompts = {
     //   javascript: [ 'Travis', 'Louisa', 'Christie', 'Will' ],
     //   recursion: [ 'Pam', 'Leta' ]
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    // const instructorCurr = instructors.reduce((acc, instructor) => {
+    //   instructor.teaches.forEach(class => {
+    //     if(!acc[class]) {
+    //       acc[class] = [];
+    //     }
+    //
+    //   })
+    //   return acc;
+    // }, {});
 
     // Annotation:
     // Write your annotation here as a comment
@@ -762,12 +800,28 @@ const bossPrompts = {
     //   { bossName: 'Ursula', sidekickLoyalty: 20 },
     //   { bossName: 'Scar', sidekickLoyalty: 16 }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const getBossName = Object.keys(bosses);
+    const displayBosses = getBossName.map(boss => {
+      return {bossName: boss.charAt(0).toUpperCase() + boss.slice(1)};
+    });
+    const matchBosses = displayBosses.forEach(boss => {
+      sidekicks.forEach(sidekick => {
+        if(boss.sidekickLoyalty && sidekick.boss === boss.bossName) {
+          boss.sidekickLoyalty += sidekick.loyaltyToBoss;
+        } else if(!boss.sidekickLoyalty && sidekick.boss === boss.bossName) {
+          boss.sidekickLoyalty = 0;
+          boss.sidekickLoyalty += sidekick.loyaltyToBoss;
+        }
+      });
+    });
+    return displayBosses;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Create array of objects with boss names as values to property 'bossName'.
+    //Sidekicks is an array of objects.
+    //Check to see if sidekick.boss === boss[name]
+    //If yes, add sidekick.loyaltyToBoss to accumulator
+    //Count of numOfSidekicks would need to access matching boss name.
   }
 };
 

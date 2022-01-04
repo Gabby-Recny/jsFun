@@ -306,7 +306,7 @@ describe("PROTOTYPES", () => {
     })
   });
 
-  describe.only("Weather prompts", () => {
+  describe("Weather prompts", () => {
     it("getAverageTemps", () => {
       const e = weatherPrompts.getAverageTemps();
 
@@ -414,7 +414,7 @@ describe("PROTOTYPES", () => {
     })
   });
 
-  describe("Turing Prompts", () => {
+  describe.only("Turing Prompts", () => {
     it("studentsForEachInstructor", () => {
       const e = turingPrompts.studentsForEachInstructor();
 
