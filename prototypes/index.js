@@ -1,5 +1,6 @@
 //Done
 const { kitties } = require('./datasets/kitties');
+//Done
 const { clubs } = require('./datasets/clubs');
 //Done
 const { mods } = require('./datasets/mods');
@@ -15,10 +16,13 @@ const { nationalParks } = require('./datasets/nationalParks');
 const { books } = require('./datasets/books');
 //Done
 const { weather } = require('./datasets/weather');
+//Done
 const { instructors, cohorts } = require('./datasets/turing');
 //Done
 const { bosses, sidekicks } = require('./datasets/bosses');
+//Done
 const { constellations, stars } = require('./datasets/astronomy');
+//Done
 const { weapons, characters } = require('./datasets/ultima');
 const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
@@ -35,9 +39,8 @@ const kittyPrompts = {
   orangeKittyNames() {
     // Return an array of just the names of kitties who are orange e.g.
     // ['Tiger', 'Snickers']
-    let orangeKitties = kitties.filter(kitty => kitty.color === 'orange');
-    let orangeName = orangeKitties.map(kitty => kitty.name);
-    return orangeName;
+    const result = kitties.filter(kitty => kitty.color === 'orange').map(kitty => kitty.name);
+    return result;
 
     // Annotation:
     //Write your annotation here as a comment
@@ -46,7 +49,9 @@ const kittyPrompts = {
   sortByAge() {
     // Sort the kitties by their age
 
-    return kitties.sort((a, b) => b.age - a.age);
+    const result = kitties.sort((a, b) => b.age - a.age);
+    return result;
+
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -66,7 +71,7 @@ const kittyPrompts = {
     // ...etc]
     const result = kitties.map(kitty => {
       return kitty.age + 2;
-    });
+    })
     return result;
   }
 };
@@ -97,13 +102,17 @@ const clubPrompts = {
     //   Pam: ['Drama', 'Art', 'Chess'],
     //   ...etc
     // }
-    // const clubMembers = clubs.reduce((acc, club) => {
-    //   console.log(Object.keys("CLUB:", clubs))
-    //   club.members.forEach(member => {
-    //     console.log(member)
-    //   });
-    //   return acc;
-    // }, {});
+    const clubMembers = clubs.reduce((acc, club) => {
+      club.members.forEach(member => {
+        if (!acc[member]) {
+          acc[member] = [club.club];
+        } else {
+          acc[member].push(club.club);
+        }
+      });
+      return acc;
+    }, {});
+    return clubMembers;
 
     // Annotation:
     //Iterate over club.members and set as keys using bracket notation.
@@ -679,14 +688,14 @@ const turingPrompts = {
     const checkCohort = instructors.map(instructor => {
       cohorts.forEach(cohort => {
         if (cohort.module === instructor.module && !instructor.studentCount) {
-          instructor.studentCount = cohort.studentCount
+          instructor.studentCount = cohort.studentCount;
         }
-      })
-    })
+      });
+    });
     const instructorCohort = instructors.map(instructor => {
       return {name: instructor.name, studentCount: instructor.studentCount};
     });
-    return instructorCohort
+    return instructorCohort;
 
     // Annotation:
     // Create an array of objects with the instructor name.
@@ -707,19 +716,18 @@ const turingPrompts = {
         acc[instructor.module]++;
       } else {
         acc[instructor.module]++;
-      };
+      }
       return acc;
     }, {});
     const displayStudentRatio = cohorts.reduce((acc, cohort) => {
       const modules = Object.keys(totalInstructors);
       const matchModules = modules.find(module => {
         return module === cohort.module.toString();
-      })
-        acc[`cohort${cohort.cohort}`] = cohort.studentCount/ totalInstructors[matchModules];
+      });
+      acc[`cohort${cohort.cohort}`] = cohort.studentCount/ totalInstructors[matchModules];
       return acc;
-    }, {})
+    }, {});
 
-      // return {[cohort]`${cohort.cohort}` = null};
     return displayStudentRatio;
     // Annotation:
     // Get a count on how many instructors are in each cohort.
@@ -742,12 +750,25 @@ const turingPrompts = {
     //     Christie: [1, 2, 3, 4],
     //     Will: [1, 2, 3, 4]
     //   }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = instructors.reduce((acc, instructor) => {
+      acc[instructor.name] = [];
+      const checkLesson = instructor.teaches.forEach(lesson => {
+        cohorts.forEach(cohort => {
+          if (cohort.curriculum.includes(lesson) && !acc[instructor.name].includes(cohort.module)) {
+            acc[instructor.name].push(cohort.module);
+          }
+        });
+      });
+      acc[instructor.name].sort();
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Iterate through the instructor array and set names as keys to a value of empty array;
+    // Iterate over instructors again, this time checking teaches array.
+    //Check to see if 'teaches' elements include any of the cohort.curriculum elements.
+    //If yes, push cohort.module into the array.
   },
 
   curriculumPerTeacher() {
@@ -759,18 +780,25 @@ const turingPrompts = {
     //   javascript: [ 'Travis', 'Louisa', 'Christie', 'Will' ],
     //   recursion: [ 'Pam', 'Leta' ]
     // }
-    // const instructorCurr = instructors.reduce((acc, instructor) => {
-    //   instructor.teaches.forEach(class => {
-    //     if(!acc[class]) {
-    //       acc[class] = [];
-    //     }
-    //
-    //   })
-    //   return acc;
-    // }, {});
-
+    const result = cohorts.reduce((acc, cohort) => {
+      cohort.curriculum.forEach(subject => {
+        if(!acc[subject]) {
+          acc[subject] = [];
+        }
+      });
+      console.log(acc);
+      return acc;
+    }, {});
+    const goThroughInstructor = instructors.forEach(instructor => {
+      instructor.teaches.forEach(lesson => {
+        result[lesson].push(instructor.name);
+      });
+    });
+    return result;
     // Annotation:
-    // Write your annotation here as a comment
+    // iterate over cohorts and create an object where each subject is a key with an empty array;
+    //iterate over instructors array to see if instructor.teaches matches the keys.
+    //If yes, push that lesson into subject array;
   }
 };
 
@@ -858,12 +886,24 @@ const astronomyPrompts = {
     //     lightYearsFromEarth: 640,
     //     color: 'red' }
     // ]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const starBabies = [];
+    const constellationKeys = Object.keys(constellations);
+    const result = stars.filter(star => {
+      return constellationKeys.forEach(conKey => {
+        if (constellations[conKey].stars.includes(star.name)) {
+          starBabies.push(star);
+        }
+      });
+    });
+    return starBabies;
+    // const result =
+    // return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Goal: Array of Star Objects that appears in constellations[i].stars;
+    // 1) Make constellation into an array so we can iterate through.
+    // 2) Access constellation properties with bracket notation for each constellation;
+    // 3)
   },
 
   starsByColor() {
@@ -877,7 +917,16 @@ const astronomyPrompts = {
     //   red: [{obj}]
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.reduce((acc, star) => {
+      if (!acc[star.color]) {
+        acc[star.color] = [];
+        acc[star.color].push(star);
+      } else {
+        acc[star.color].push(star);
+      }
+      return acc;
+    }, {});
+
     return result;
 
     // Annotation:
@@ -897,9 +946,13 @@ const astronomyPrompts = {
     //    "The Plow",
     //    "Orion",
     //    "The Little Dipper" ]
-
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = stars.sort((a, b) => {
+      return a.visualMagnitude - b.visualMagnitude;
+    }).filter(star => {
+      if (star.constellation) {
+        return star.constellation;
+      }
+    }).map(star => star.constellation);
     return result;
 
     // Annotation:
@@ -929,24 +982,41 @@ const ultimaPrompts = {
 
     // Return the sum of the amount of damage for all the weapons that our characters can use
     // Answer => 113
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
+    // const weaponInfo = Object.keys(weapons);
+    // const calcDamage = weaponInfo.forEach(key => {
+    //   console.log(960, weapons[key].damage)
+    // });
+    const totalDamage = characters.reduce((acc, character) => {
+      character.weapons.forEach(charWeap => {
+        acc += weapons[charWeap].damage;
+      });
+      return acc;
+    }, 0);
+    return totalDamage;
   },
 
   charactersByTotal() {
 
     // Return the sum damage and total range for each character as an object.
     // ex: [ { Avatar: { damage: 27, range: 24 }, { Iolo: {...}, ...}
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = characters.map(character => {
+      var totalDamage = 0;
+      var totalRange = 0;
+      character.weapons.forEach(charWeapon =>  {
+        totalDamage += weapons[charWeapon].damage;
+        totalRange += weapons[charWeapon].range;
+      });
+      return {[character.name]: {damage: totalDamage, range: totalRange}};
+    });
     return result;
-
     // Annotation:
-    // Write your annotation here as a comment
+    // Goal: Create array of objects where each obj has a key of the character name and
+    //a value of the total 'damage' and 'range' of all character's weapons.
+    // 1) Create an object with keys of the character names and values of empty objects.
+    // 2) Iterate over character weapons array. Match charWeapons to weapons keys to access
+    //the numbers.
+    // 3) If charWeapons contains the key, add damage and range to respective keys.
+
   },
 };
 

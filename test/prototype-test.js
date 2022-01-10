@@ -19,7 +19,7 @@ const {
 } = require("../prototypes/index");
 
 describe("PROTOTYPES", () => {
-  describe("Kitty Prompts", () => {
+  describe.only("Kitty Prompts", () => {
     it("orangeKittyNames", () => {
       const e = kittyPrompts.orangeKittyNames();
 
@@ -414,7 +414,7 @@ describe("PROTOTYPES", () => {
     })
   });
 
-  describe.only("Turing Prompts", () => {
+  describe("Turing Prompts", () => {
     it("studentsForEachInstructor", () => {
       const e = turingPrompts.studentsForEachInstructor();
 
