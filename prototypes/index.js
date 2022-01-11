@@ -354,10 +354,8 @@ const classPrompts = {
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
-    const result = () => {
-      return classrooms.sort((a,b) => a.capacity - b.capacity);
-    };
-    result();
+    const result = classrooms.sort((a,b) => a.capacity - b.capacity);
+    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -1039,6 +1037,18 @@ const ultimaPrompts = {
 // DATASET: dinosaurs, humans, movies from ./datasets/dinosaurs
 const dinosaurPrompts = {
   countAwesomeDinosaurs() {
+    const result = movies.reduce((acc, movie) => {
+      acc[movie.title] = 0;
+      const dinoSpecies = Object.keys(dinosaurs);
+      movie.dinos.forEach(dino => {
+        if (dinosaurs[dino].isAwesome) {
+          acc[movie.title]++;
+        }
+      });
+      return acc;
+    }, {});
+    return result;
+
     // Return an object where each key is a movie title and each value is the
     // number of awesome dinosaurs in that movie. e.g.:
     // {
@@ -1048,9 +1058,6 @@ const dinosaurPrompts = {
     //   'Jurassic World': 11,
     //   'Jurassic World: Fallen Kingdom': 18
     // }
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
 
     // Annotation:
     // Write your annotation here as a comment
@@ -1082,11 +1089,25 @@ const dinosaurPrompts = {
       }
     */
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = movies.reduce((acc, movie) => {
+      const actors = Object.keys(humans);
+      let avgAge = 0;
+      movie.cast.forEach(castMem => {
+        avgAge += (movie.yearReleased - humans[castMem].yearBorn);
+      });
+      if (!acc[movie.director]) {
+        acc[movie.director] = {[movie.title]: Math.floor(avgAge/movie.cast.length)};
+      } else {
+        acc[movie.director][movie.title] = Math.floor(avgAge/movie.cast.length);
+      }
+      return acc;
+    }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Goal: Object is a key of movieDirectorName and a value of an object.
+    //The key inside of the object is the movie title and the value is the avg
+    //age of the cast the year it came out.
   },
 
   uncastActors() {
@@ -1114,12 +1135,17 @@ const dinosaurPrompts = {
         imdbStarMeterRating: 0
       }]
     */
+    //Array of strings representing actor names. ALSO keys to each actor object.
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
+    // console.log(unhired)
     // Annotation:
-    // Write your annotation here as a comment
+    // Data Type Goal: Array of Actor Objects that have NOT been cast in any movies.
+    //    - Each object must have national and imbdStarMeterRating;
+    //    - The array must be sorted by alphabetically BY NATIONALITY;
+    // 1) Filter through humans because we want act objects.
+    // 2) If movies[i].cast does not include actor, return actor object.
+    // 3) Iterate tbrough new array to only have three properties (name, nationality, imbdStarMeterRating);
+    // 4) Sotrt alphabetically by NATIONALITY;
   },
 
   actorsAgesInMovies() {
@@ -1137,9 +1163,15 @@ const dinosaurPrompts = {
       { name: 'Chris Pratt', ages: [ 36, 39 ] },
       { name: 'Bryce Dallas Howard', ages: [ 34, 37 ] } ]
     */
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    // const actorNames = Object.keys(humans);
+    // const actorList = [];
+    // const result = movies.reduce((acc, movie) => {
+    //   movie.cast.forEach(castMember => {
+    //     if (!acc.includes(humans[castMember]))
+    //   })
+    //   return acc;
+    // }, []);
+    // return result;
 
     // Annotation:
     // Write your annotation here as a comment
