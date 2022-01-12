@@ -1137,7 +1137,31 @@ const dinosaurPrompts = {
     */
     //Array of strings representing actor names. ALSO keys to each actor object.
 
-    // console.log(unhired)
+    const actorNames = Object.keys(humans);
+    const allCasts = movies.reduce((acc, movie) => {
+      movie.cast.forEach(movieCast => {
+        acc.push(movieCast);
+      });
+      return acc;
+    }, []);
+    const unhiredActors = actorNames.filter(actor => {
+      return !allCasts.includes(actor);
+    });
+    const result = unhiredActors.map(actor => {
+      return {name: actor, nationality: humans[actor].nationality, imdbStarMeterRating: humans[actor].imdbStarMeterRating};
+    }).sort((a, b) => {
+      // return a.nationality.toLowerCase().localeCompare(b.nationality.toLowerCase());;
+      if (a.nationality.toLowerCase() < b.nationality.toLowerCase()) {
+        return -1;
+      }
+      if (a.nationality.toLowerCase() > b.nationality.toLowerCase()) {
+        return 1;
+      }
+    });
+    return result;
+    // console.log(unhiredActors);
+    //Tanisha Pseudocode
+    // Create new array with all of the movie.casts;
     // Annotation:
     // Data Type Goal: Array of Actor Objects that have NOT been cast in any movies.
     //    - Each object must have national and imbdStarMeterRating;
@@ -1163,15 +1187,33 @@ const dinosaurPrompts = {
       { name: 'Chris Pratt', ages: [ 36, 39 ] },
       { name: 'Bryce Dallas Howard', ages: [ 34, 37 ] } ]
     */
-    // const actorNames = Object.keys(humans);
-    // const actorList = [];
-    // const result = movies.reduce((acc, movie) => {
-    //   movie.cast.forEach(castMember => {
-    //     if (!acc.includes(humans[castMember]))
-    //   })
-    //   return acc;
-    // }, []);
-    // return result;
+    const allCasts = movies.reduce((acc, movie) => {
+      movie.cast.forEach(castMem => {
+        if (!acc.includes(castMem)) {
+          acc.push(castMem);
+        }
+      });
+      return acc;
+    }, []);
+    const actorNames = Object.keys(humans);
+    const result = allCasts.map(castMem => {
+      let castAge = 0;
+      let ageList = [];
+      movies.forEach(movie => {
+        var actorAge = actorNames.forEach(actor => {
+          if (movie.cast.includes(castMem)) {
+            castAge = movie.yearReleased - humans[castMem].yearBorn;
+          }
+        });
+        if (!ageList.includes(castAge) && castAge !== 0) {
+          ageList.push(castAge);
+        }
+      });
+      return {name: castMem, ages: ageList};
+    });
+    return result;
+
+
 
     // Annotation:
     // Write your annotation here as a comment
